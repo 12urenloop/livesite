@@ -1,0 +1,10 @@
+version: '3'
+
+services:
+    live_site:
+        build:
+            context: .
+        container_name: live_site
+        restart: unless-stopped
+        ports:
+            - "4000:80"

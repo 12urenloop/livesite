@@ -1,0 +1,9 @@
+node_modules/
+public/build/
+.dockerignore
+.git
+.gitignore/
+Dockerfile
+LICENSE
+README.me
+package-lock.json
