@@ -1,95 +1,114 @@
 <script lang="ts">
-	import { onDestroy } from "svelte";
-
-	import { DoubleBounce } from "svelte-loading-spinners";
-
 	import TeamRow from "./TeamRow.svelte";
 
-	type Standings = string[];
+	type Count = {
+		count: number,
+		team: {
+			id: number,
+			name: string,
+		}
+	}[];
+	type Standings = {
+		team_name: string,
+		laps: number,
+	}[];
 
-	const _STANDINGS_STUB: Standings = ["2", "5", "18", "1", "9", "20", "19", "6", "3", "4", "7", "14", "16", "15", "8", "10", "11", "12", "13", "17"];
-	const STANDINGS_URL = "http://0.0.0.0/standings";
+	const STANDINGS_URL = "ws://l.o.x.s.i/feed";
+	/** Sorted list of teams, split into chunks of 10 */
+	const chunks: Standings[] = [];
 
-	async function get_standings(): Promise<Standings> {
+	const standings_socket = new WebSocket(STANDINGS_URL);
+	standings_socket.onerror = (err) => {
+		console.error(`WEBSOCKET ERROR:\n${err}`);
+	};
+	standings_socket.onclose = (ev) => {
+		console.error(`WEBSOCKET CLOSED:\n${ev}`);
+	};
+	standings_socket.onmessage = (ev) => {
 		try {
-			const res = await fetch(STANDINGS_URL, { redirect: "follow", mode: "no-cors" });
+			const data = <Count>JSON.parse(ev.data);
+			const standings: Standings = [];
 
-			if (!(res.ok)) {
-				console.error(`ERROR: could not get config from ${STANDINGS_URL}\n${res.status}\n${res.body}\nUsing stub data...`);
-				return _STANDINGS_STUB;
-				// return Promise.reject(`Could not get config from ${STANDINGS_URL}\n${res.status}\n${res.body}`);
+			for (const count of data) {
+				const laps = count.count;
+				const team_name = count.team.name;
+
+				standings.push({ team_name, laps });
 			}
 
-			return res.json();
+			standings.sort((a, b) => b.laps - a.laps);
+			console.log(standings);
+
+			if (standings.length > 40) { console.warn("WARNING: listing more than 40 teams, this might not fit on the screen"); }
+
+			// Split into chunks of 10 (fits better on screen like this);
+			chunks.length = 0;
+			for (let i=0; i<standings.length; i+=10) {
+				const chunk = standings.slice(i, i+10);
+				chunks.push(chunk);
+			}
+
+			console.log(chunks);
 		} catch (err) {
-			console.error(`ERROR: could not get config from ${STANDINGS_URL}\n${err}\nUsing stub data...`);
-			return _STANDINGS_STUB;
-			// return Promise.reject(`could not get config from ${STANDINGS_URL}\n${err}`);
+			console.error(`ERROR: could not parse websocket message\nMessage: ${ev.data}\nReason: ${err}`)
+		}
+	};
+
+	function test(inp: string) {
+		try {
+			const data = <Count>JSON.parse(inp);
+			const standings: Standings = [];
+
+			for (const count of data) {
+				const laps = count.count;
+				const team_name = count.team.name;
+
+				standings.push({ team_name, laps });
+			}
+
+			// Sort by descending laps
+			standings.sort((a, b) => b.laps - a.laps);
+
+			if (standings.length > 40) { console.warn("WARNING: listing more than 40 teams, this might not fit on the screen"); }
+
+			// Split into chunks of 10 (fits better on screen like this);
+			chunks.length = 0;
+			for (let i=0; i<standings.length; i+=10) {
+				const chunk = standings.slice(i, i+10);
+				chunks.push(chunk);
+			}
+
+			console.log(chunks);
+		} catch (err) {
+			console.error(`ERROR: could not parse websocket message\nMessage: ${inp}\nReason: ${err}`)
 		}
 	}
 
-	let standings_promise = get_standings();
-
-	const interval = setInterval(get_standings, 1000);
-	onDestroy(() => clearInterval(interval));
+	test(`[{ "count": 3, "team": { "id": 0, "name": "VTK mens 1" } }, { "count": 1, "team": { "id": 1, "name": "VTK mens 2" } }, { "count": 8, "team": { "id": 2, "name": "VTK mens 3" } }]`);
 </script>
 
-{#await standings_promise}
-	<DoubleBounce size="3" unit="em" color="#FF7F00" duration="1.5s"/>
-{:then}
-	<table>
-		<thead>
-			<tr>
-				<th><h1>HUIDIGE RANGSCHIKKING</h1></th>
-			</tr>
-		</thead>
+<table>
+	<!-- Header -->
+	<thead>
+		<tr>
+			<th><h1>HUIDIGE RANGSCHIKKING</h1></th>
+		</tr>
+	</thead>
+
+	<!-- Tables -->
+	{#each chunks as chunk, i}
 		<tbody>
-			<TeamRow position="1" logo="images/vtk.png" name="VTK Menskes" laps=15 />
-			<TeamRow position="2" logo="images/vtk.png" name="VTK Menskes" laps=15 />
-			<TeamRow position="3" logo="images/vtk.png" name="VTK Menskes" laps=15 />
-			<TeamRow position="4" logo="images/vtk.png" name="VTK Menskes" laps=15 />
-			<TeamRow position="5" logo="images/vtk.png" name="VTK Menskes" laps=15 />
-			<TeamRow position="6" logo="images/vtk.png" name="VTK Menskes" laps=15 />
-			<TeamRow position="7" logo="images/vtk.png" name="VTK Menskes" laps=15 />
-			<TeamRow position="8" logo="images/vtk.png" name="VTK Menskes" laps=15 />
-			<TeamRow position="9" logo="images/vtk.png" name="VTK Menskes" laps=15 />
-			<TeamRow position="10" logo="images/vtk.png" name="VTK Menskes" laps=15 />
+		{#each chunk as team, j}
+			<TeamRow
+				position={(i+j+1).toString()}
+				logo="images/vtk.png"
+				name={team.team_name}
+				laps={team.laps.toString()}
+			/>
+		{/each}
 		</tbody>
-		<tbody>
-			<TeamRow position="11" logo="images/vtk.png" name="VTK Menskes" laps=15 />
-			<TeamRow position="12" logo="images/vtk.png" name="VTK Menskes" laps=15 />
-			<TeamRow position="13" logo="images/vtk.png" name="VTK Menskes" laps=15 />
-			<TeamRow position="14" logo="images/vtk.png" name="VTK Menskes" laps=15 />
-			<TeamRow position="15" logo="images/vtk.png" name="VTK Menskes" laps=15 />
-			<TeamRow position="16" logo="images/vtk.png" name="VTK Menskes" laps=15 />
-			<TeamRow position="17" logo="images/vtk.png" name="VTK Menskes" laps=15 />
-			<TeamRow position="18" logo="images/vtk.png" name="VTK Menskes" laps=15 />
-			<TeamRow position="19" logo="images/vtk.png" name="VTK Menskes" laps=15 />
-			<TeamRow position="20" logo="images/vtk.png" name="VTK Menskes" laps=15 />
-		</tbody>
-		<tbody>
-			<TeamRow position="21" logo="images/vtk.png" name="VTK Menskes" laps=15 />
-			<TeamRow position="22" logo="images/vtk.png" name="VTK Menskes" laps=15 />
-			<TeamRow position="23" logo="images/vtk.png" name="VTK Menskes" laps=15 />
-			<TeamRow position="24" logo="images/vtk.png" name="VTK Menskes" laps=15 />
-			<TeamRow position="25" logo="images/vtk.png" name="VTK Menskes" laps=15 />
-			<TeamRow position="26" logo="images/vtk.png" name="VTK Menskes" laps=15 />
-			<TeamRow position="27" logo="images/vtk.png" name="VTK Menskes" laps=15 />
-			<TeamRow position="28" logo="images/vtk.png" name="VTK Menskes" laps=15 />
-			<TeamRow position="29" logo="images/vtk.png" name="VTK Menskes" laps=15 />
-			<TeamRow position="30" logo="images/vtk.png" name="VTK Menskes" laps=15 />
-		</tbody>
-		<tbody>
-			<TeamRow position="31" logo="images/vtk.png" name="VTK Menskes" laps=15 />
-			<TeamRow position="32" logo="images/vtk.png" name="VTK Menskes" laps=15 />
-			<TeamRow position="33" logo="images/vtk.png" name="VTK Menskes" laps=15 />
-			<TeamRow position="34" logo="images/vtk.png" name="VTK Menskes" laps=15 />
-			<TeamRow position="35" logo="images/vtk.png" name="VTK Menskes" laps=15 />
-		</tbody>
-	</table>
-{:catch err}
-	<p class="error">Error loading standings...<br>{err}</p>
-{/await}
+	{/each}
+</table>
 
 <style lang="scss">
 	@import "./lib/colors";

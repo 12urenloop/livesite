@@ -23,10 +23,14 @@
 		}
 	}
 
+	$g: &; // Get grandparent
+
 	tr {
 		font-size: max(1.5vw, 1rem);
-		border-top: 2px solid #AAAAAA;
-		border-bottom: 2px solid #AAAAAA;
+
+		&:not(:last-child) {
+			border-bottom: 2px solid #AAAAAA;
+		}
 
 		&:nth-child(even) {
 			@include adaptive_hover_bg(darken($background, 10%));
@@ -72,6 +76,9 @@
 			// Prevent double borders between adjacent tbodies
 			&:first-child {
 				border-top: none;
+			}
+			&:last-child {
+				border-bottom: 2px solid #AAAAAA;
 			}
 		}
 	}
