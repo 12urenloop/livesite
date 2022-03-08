@@ -84,7 +84,28 @@
 		}
 	}
 
-	test(`[{ "count": 3, "team": { "id": 0, "name": "VTK mens 1" } }, { "count": 1, "team": { "id": 1, "name": "VTK mens 2" } }, { "count": 8, "team": { "id": 2, "name": "VTK mens 3" } }]`);
+	test(`[\
+{ "count": 3, "team": { "id": 0, "name": "VTK mens 1" } },\
+{ "count": 1, "team": { "id": 1, "name": "VTK mens 2" } },\
+{ "count": 8, "team": { "id": 2, "name": "VTK mens 3" } },\
+{ "count": 4, "team": { "id": 3, "name": "VTK mens 4" } },\
+{ "count": 10, "team": { "id": 4, "name": "VTK mens 5" } },\
+{ "count": 12, "team": { "id": 5, "name": "VTK mens 6" } },\
+{ "count": 15, "team": { "id": 6, "name": "VTK mens 7" } },\
+{ "count": 3, "team": { "id": 7, "name": "VTK mens 8" } },\
+{ "count": 17, "team": { "id": 8, "name": "VTK mens 9" } },\
+{ "count": 17, "team": { "id": 8, "name": "VTK mens 9" } },\
+{ "count": 3, "team": { "id": 0, "name": "VTK mens 1" } },\
+{ "count": 1, "team": { "id": 1, "name": "VTK mens 2" } },\
+{ "count": 8, "team": { "id": 2, "name": "VTK mens 3" } },\
+{ "count": 4, "team": { "id": 3, "name": "VTK mens 4" } },\
+{ "count": 10, "team": { "id": 4, "name": "VTK mens 5" } },\
+{ "count": 12, "team": { "id": 5, "name": "VTK mens 6" } },\
+{ "count": 15, "team": { "id": 6, "name": "VTK mens 7" } },\
+{ "count": 3, "team": { "id": 7, "name": "VTK mens 8" } },\
+{ "count": 17, "team": { "id": 8, "name": "VTK mens 9" } },\
+{ "count": 17, "team": { "id": 8, "name": "VTK mens 9" } }\
+]`);
 </script>
 
 <table>
@@ -100,7 +121,7 @@
 		<tbody>
 		{#each chunk as team, j}
 			<TeamRow
-				position={(i+j+1).toString()}
+				position={(i*10+j+1).toString()}
 				logo="images/vtk.png"
 				name={team.team_name}
 				laps={team.laps.toString()}
