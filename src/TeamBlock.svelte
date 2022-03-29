@@ -1,36 +1,42 @@
 <script lang="ts">
+	/** The teams position in the ranking */
 	export let position: string;
+	/** The path to the teams logo image */
 	export let logo: string;
+	/** The team name */
 	export let name: string;
+	/** How many laps the team has ran so far */
 	export let laps: string;
-	export let cell_count: number;
+	/** The font size of the cell */
+	export let font_size: number;
 
-	const font_style = {"font-size": `${Math.min((40/cell_count)*1.1, 5)}rem`};
-
-	$: font_style_css = Object.entries(font_style)
-		.map(([k, v]) => `${k}:${v}`)
-		.join(";");
+	const font_size_css = `font-size: ${font_size}rem;`;
 </script>
 
-<div class="wrapper" style="{font_style_css}">
+<td style="{font_size_css}">
 	<div class="position">#{position}</div>
 	<div class="logo"><img src={logo} alt="Logo" class="logo__image"></div>
 	<div class="name">{name}</div>
 	<div class="laps">{laps}</div>
-</div>
+</td>
 
 <style lang="scss">
 	@import "./lib/colors.scss";
 
-	.wrapper {
+	td {
 		font-size: max(1.5vw, 1rem);
 		display: flex;
 		flex-flow: row nowrap;
 		padding: 0;
 		border: 0.2rem solid $zeus;
+		// border-right: 0.2rem solid $zeus;
+
+		// &:first-child {
+		// 	border-left: 0.2rem solid $zeus;
+		// }
 
 		div {
-			padding: 0.5rem;
+			padding: 0.2rem;
 			display: flex;
 			flex-flow: row nowrap;
 			justify-content: center;

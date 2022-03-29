@@ -17,6 +17,12 @@
 	const STANDINGS_URL = "ws://l.o.x.s.i/feed";
 
 	const standings: Standings = [];
+	/** Amount of columns in the standing tables */
+	let num_cols: number;
+	/** Amount of (used) rows in the standings table */
+	let num_rows: number;
+	/** Font size of each cell in the standings table */
+	let font_size: number;
 
 	const standings_socket = new WebSocket(STANDINGS_URL);
 	standings_socket.onerror = (err) => {
@@ -31,6 +37,8 @@
 
 	function parse_message(inp: string) {
 		try {
+			// Clear standings array
+			standings.length = 0;
 			const data = <Count>JSON.parse(inp);
 
 			for (const count of data) {
@@ -42,6 +50,22 @@
 
 			// Sort by descending laps
 			standings.sort((a, b) => b.laps - a.laps);
+
+			// Create grid of at most 2n x n = 2n^2 blocks
+			// If there are not enough standings to create a perfect rectangle
+			// the rectangle will simply be filled up as far as possible, however
+			// it must still be known how many columns are needed, hence the Math.ceil
+			num_cols = Math.ceil(Math.sqrt(standings.length / 2));
+
+			// Filling a 2n x n table with m elements will use at most
+			// ceil(m / n) rows
+			// eg. 5 cells would require a 4x2 table but only actually use 3 rows
+			// (ceil(5 / 2) = 3)
+			num_rows = Math.ceil(standings.length / num_cols);
+
+			// Scale font size dynamically based on amount of columns, clamping it to between
+			// 1 and 5 rem
+			font_size = Math.max(1, Math.min((4/num_cols)*2, 5));
 
 			if (standings.length > 40) { console.warn("WARNING: listing more than 40 teams, this might not fit on the screen"); }
 		} catch (err) {
@@ -57,36 +81,60 @@
 // { "count": 17, "team": { "id": 8, "name": "vtk" } },\
 // { "count": 4, "team": { "id": 3, "name": "vtk" } },\
 // { "count": 10, "team": { "id": 4, "name": "vtk" } },\
-// { "count": 12, "team": { "id": 5, "name": "vtk" } },\
-// { "count": 15, "team": { "id": 6, "name": "vtk" } },\
-// { "count": 3, "team": { "id": 7, "name": "vtk" } },\
-// { "count": 12, "team": { "id": 5, "name": "vtk" } },\
-// { "count": 15, "team": { "id": 6, "name": "vtk" } },\
-// { "count": 3, "team": { "id": 7, "name": "vtk" } },\
-// { "count": 17, "team": { "id": 8, "name": "vtk" } },\
 // { "count": 1, "team": { "id": 1, "name": "vtk" } },\
 // { "count": 8, "team": { "id": 2, "name": "vtk" } },\
 // { "count": 17, "team": { "id": 8, "name": "vtk" } },\
+// { "count": 4, "team": { "id": 3, "name": "vtk" } },\
+// { "count": 10, "team": { "id": 4, "name": "vtk" } },\
+// { "count": 1, "team": { "id": 1, "name": "vtk" } },\
+// { "count": 8, "team": { "id": 2, "name": "vtk" } },\
+// { "count": 17, "team": { "id": 8, "name": "vtk" } },\
+// { "count": 4, "team": { "id": 3, "name": "vtk" } },\
+// { "count": 10, "team": { "id": 4, "name": "vtk" } },\
+// { "count": 1, "team": { "id": 1, "name": "vtk" } },\
+// { "count": 8, "team": { "id": 2, "name": "vtk" } },\
+// { "count": 17, "team": { "id": 8, "name": "vtk" } },\
+// { "count": 4, "team": { "id": 3, "name": "vtk" } },\
+// { "count": 10, "team": { "id": 4, "name": "vtk" } },\
 // { "count": 17, "team": { "id": 8, "name": "vtk" } }\
 // ]`);
 </script>
 
-<h1>HUIDIGE RANGSCHIKKING</h1>
+<table>
+	<thead>
+		<tr><th><h1>HUIDIGE RANGSCHIKKING</h1></th></tr>
+	</thead>
 
-<!-- Tables -->
-<div class="wrapper">
-	<div class="container">
-		{#each standings as standing, i}
-			<TeamBlock
-				position={(i+1).toString()}
-				logo={`images/teams/${standing.team_name}.png`}
-				name={standing.team_name}
-				laps={standing.laps.toString()}
-				cell_count={standings.length}
-			/>
+	<tbody>
+		{#each Array(num_rows) as _, i}
+			<tr>
+				{#each Array(num_cols) as _, j}
+					{@const idx = i * num_cols + j}
+					{#if idx < standings.length}
+						<TeamBlock
+							position={(idx + 1).toString()}
+							logo={`images/teams/${standings[idx].team_name}.png`}
+							name={standings[idx].team_name}
+							laps={standings[idx].laps.toString()}
+							font_size={font_size}
+						/>
+					{/if}
+				{/each}
+			</tr>
 		{/each}
-	</div>
-</div>
+	</tbody>
+
+	<tfoot>
+		<tr>
+			<!-- TODO: ADD SPONSORS -->
+			<td><img src="https://zinc.zeus.gent/zeus" alt="Sponsor"></td>
+			<td><img src="" alt="Sponsor"></td>
+			<td><img src="" alt="Sponsor"></td>
+			<td><img src="" alt="Sponsor"></td>
+			<td><img src="" alt="Sponsor"></td>
+		</tr>
+	</tfoot>
+</table>
 
 <style lang="scss">
 	@import "./lib/colors";
@@ -98,28 +146,75 @@
 			background-color: darken($color, 2%);
 		}
 	}
-	h1 {
-		padding: 0;
-		margin: 0.75rem 0 1.5rem 0;
 
-		color: $zeus;
-		font-size: max(3vw, 2rem);
-		font-weight: 400;
-	}
-	.wrapper {
-		width: auto;
-		height: auto;
-		margin: 2rem;
+	table {
+		width: 100%;
+		height: 100vh;
+		text-align: center;
+		border-collapse: collapse;
+		table-layout: fixed;
 
 		display: flex;
-		flex-flow: row nowrap;
-		justify-content: center;
-	}
+		flex-flow: column nowrap;
+		justify-content: flex-start;
+		align-items: center;
 
-	.container {
-		width: auto;
-		height: auto;
-		display: flex;
-		flex-flow: row wrap;
+		thead {
+			flex: 0 1 auto;
+			display: flex;
+			flex-flow: row nowrap;
+			justify-content: center;
+			align-items: center;
+
+			h1 {
+				padding: 0;
+				margin: 0.75rem 0 1.5rem 0;
+				overflow-wrap: break-word;
+
+				color: $zeus;
+				font-size: max(3vw, 2.5rem);
+				font-weight: 500;
+			}
+		}
+
+		tbody {
+			margin: 0.2rem 0.2rem 1.5rem 0.2rem;
+			flex: 0 1 auto;
+
+			tr {
+				display: flex;
+				flex-flow: row wrap;
+				justify-content: center;
+			}
+		}
+
+		tfoot {
+			flex: 0 1 auto;
+			width: 100%;
+			margin-top: auto;
+			background-color: $background-dark;
+
+			tr {
+				display: flex;
+				flex-flow: row wrap;
+				justify-content: center;
+				align-items: center;
+
+				td {
+					display: flex;
+					flex-flow: row nowrap;
+					justify-content: center;
+					align-items: center;
+				}
+			}
+
+			img {
+				padding: 0;
+				margin: 0;
+
+				width: 4rem;
+				height: 4rem;
+			}
+		}
 	}
 </style>
