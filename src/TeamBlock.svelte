@@ -15,7 +15,7 @@
 
 <div class="wrapper" style="{font_size_css}">
 	<div class="position">#{position}</div>
-	<div class="logo"><img src={logo} alt="Logo" class="logo__image"></div>
+	<!-- <div class="logo"><img src={logo} alt="Logo" class="logo__image"></div> -->
 	<div class="name">{name}</div>
 	<div class="laps">{laps}</div>
 </div>
