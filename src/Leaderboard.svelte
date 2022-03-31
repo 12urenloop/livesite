@@ -14,13 +14,13 @@
 	}[];
 
 	/** !! CHANGE BEFORE RUNNING CODE !! */
-	const STANDINGS_URL = "ws://l.o.x.s.i/feed";
+	const STANDINGS_URL = "ws://172.12.50.37:8000/feed";
 
 	const standings: Standings = [];
 	/** Amount of columns in the standing tables */
-	let num_cols: number;
+	// let num_cols: number;
 	/** Amount of (used) rows in the standings table */
-	let num_rows: number;
+	// let num_rows: number;
 	/** Font size of each cell in the standings table */
 	let font_size: number;
 
@@ -55,17 +55,18 @@
 			// If there are not enough standings to create a perfect rectangle
 			// the rectangle will simply be filled up as far as possible, however
 			// it must still be known how many columns are needed, hence the Math.ceil
-			num_cols = Math.ceil(Math.sqrt(standings.length / 2));
+			// num_cols = Math.ceil(Math.sqrt(standings.length / 2));
 
 			// Filling a 2n x n table with m elements will use at most
 			// ceil(m / n) rows
 			// eg. 5 cells would require a 4x2 table but only actually use 3 rows
 			// (ceil(5 / 2) = 3)
-			num_rows = Math.ceil(standings.length / num_cols);
+			// num_rows = Math.ceil(standings.length / num_cols);
 
 			// Scale font size dynamically based on amount of columns, clamping it to between
 			// 1 and 5 rem
-			font_size = Math.max(1, Math.min((4/num_cols)*2, 5));
+			font_size = Math.max(1.25, Math.min((40/standings.length)*0.5, 3));
+			// font_size = 3;
 
 			if (standings.length > 40) { console.warn("WARNING: listing more than 40 teams, this might not fit on the screen"); }
 		} catch (err) {
@@ -100,7 +101,7 @@
 // ]`);
 </script>
 
-<table>
+<!-- <table>
 	<thead>
 		<tr><th><h1>HUIDIGE RANGSCHIKKING</h1></th></tr>
 	</thead>
@@ -113,7 +114,7 @@
 					{#if idx < standings.length}
 						<TeamBlock
 							position={(idx + 1).toString()}
-							logo={`images/teams/${standings[idx].team_name}.png`}
+							logo={`images/6ul.jpg`}
 							name={standings[idx].team_name}
 							laps={standings[idx].laps.toString()}
 							font_size={font_size}
@@ -126,15 +127,26 @@
 
 	<tfoot>
 		<tr>
-			<!-- TODO: ADD SPONSORS -->
 			<td><img src="https://zinc.zeus.gent/zeus" alt="Sponsor"></td>
-			<td><img src="" alt="Sponsor"></td>
-			<td><img src="" alt="Sponsor"></td>
-			<td><img src="" alt="Sponsor"></td>
-			<td><img src="" alt="Sponsor"></td>
 		</tr>
 	</tfoot>
-</table>
+</table> -->
+
+<h1>HUIDIGE RANGSCHIKKING</h1>
+
+<div class="standings">
+	{#each standings as standing, i}
+		<TeamBlock
+			position={(i+1).toString()}
+			logo={`images/6ul.jpg`}
+			name={standing.team_name}
+			laps={standing.laps.toString()}
+			font_size={font_size}
+		/>
+	{/each}
+</div>
+
+<footer><img src="https://zinc.zeus.gent/zeus" alt="Sponsor"></footer>
 
 <style lang="scss">
 	@import "./lib/colors";
@@ -147,74 +159,118 @@
 		}
 	}
 
-	table {
+	h1 {
 		width: 100%;
-		height: 100vh;
 		text-align: center;
-		border-collapse: collapse;
-		table-layout: fixed;
+		padding: 0;
+		margin: 0.75rem 0 0 0;
+		overflow-wrap: break-word;
+
+		color: $zeus;
+		font-size: max(3vw, 2.5rem);
+		font-weight: 500;
+	}
+
+	.standings {
+		margin-top: 1.5rem;
+		margin-bottom: 1.5rem;
+		width: 100%;
+		height: 70vh;
 
 		display: flex;
-		flex-flow: column nowrap;
+		flex-flow: column wrap;
 		justify-content: flex-start;
 		align-items: center;
+	}
 
-		thead {
-			flex: 0 1 auto;
-			display: flex;
-			flex-flow: row nowrap;
-			justify-content: center;
-			align-items: center;
+	footer {
+		width: 100%;
+		margin-top: auto;
+		background-color: $background-dark;
 
-			h1 {
-				padding: 0;
-				margin: 0.75rem 0 1.5rem 0;
-				overflow-wrap: break-word;
+		display: flex;
+		flex-flow: row wrap;
+		justify-content: center;
+		align-items: center;
 
-				color: $zeus;
-				font-size: max(3vw, 2.5rem);
-				font-weight: 500;
-			}
-		}
+		img {
+			padding: 0;
+			margin: 0;
 
-		tbody {
-			margin: 0.2rem 0.2rem 1.5rem 0.2rem;
-			flex: 0 1 auto;
-
-			tr {
-				display: flex;
-				flex-flow: row wrap;
-				justify-content: center;
-			}
-		}
-
-		tfoot {
-			flex: 0 1 auto;
-			width: 100%;
-			margin-top: auto;
-			background-color: $background-dark;
-
-			tr {
-				display: flex;
-				flex-flow: row wrap;
-				justify-content: center;
-				align-items: center;
-
-				td {
-					display: flex;
-					flex-flow: row nowrap;
-					justify-content: center;
-					align-items: center;
-				}
-			}
-
-			img {
-				padding: 0;
-				margin: 0;
-
-				width: 4rem;
-				height: 4rem;
-			}
+			width: 4rem;
+			height: 4rem;
 		}
 	}
+
+	// table {
+	// 	width: 100%;
+	// 	height: 100vh;
+	// 	text-align: center;
+	// 	border-collapse: collapse;
+	// 	table-layout: fixed;
+
+	// 	display: flex;
+	// 	flex-flow: column nowrap;
+	// 	justify-content: flex-start;
+	// 	align-items: center;
+
+	// 	thead {
+	// 		flex: 0 1 auto;
+	// 		display: flex;
+	// 		flex-flow: row nowrap;
+	// 		justify-content: center;
+	// 		align-items: center;
+
+	// 		h1 {
+	// 			padding: 0;
+	// 			margin: 0.75rem 0 1.5rem 0;
+	// 			overflow-wrap: break-word;
+
+	// 			color: $zeus;
+	// 			font-size: max(3vw, 2.5rem);
+	// 			font-weight: 500;
+	// 		}
+	// 	}
+
+	// 	tbody {
+	// 		min-width: 75vw;
+	// 		margin: 0.2rem 0.2rem 1.5rem 0.2rem;
+	// 		flex: 0 1 auto;
+
+	// 		tr {
+	// 			display: flex;
+	// 			flex-flow: row wrap;
+	// 			justify-content: center;
+	// 		}
+	// 	}
+
+	// 	tfoot {
+	// 		flex: 0 1 auto;
+	// 		width: 100%;
+	// 		margin-top: auto;
+	// 		background-color: $background-dark;
+
+	// 		tr {
+	// 			display: flex;
+	// 			flex-flow: row wrap;
+	// 			justify-content: center;
+	// 			align-items: center;
+
+	// 			td {
+	// 				display: flex;
+	// 				flex-flow: row nowrap;
+	// 				justify-content: center;
+	// 				align-items: center;
+	// 			}
+	// 		}
+
+	// 		img {
+	// 			padding: 0;
+	// 			margin: 0;
+
+	// 			width: 4rem;
+	// 			height: 4rem;
+	// 		}
+	// 	}
+	// }
 </style>

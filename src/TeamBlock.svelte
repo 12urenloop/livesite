@@ -13,17 +13,17 @@
 	const font_size_css = `font-size: ${font_size}rem;`;
 </script>
 
-<td style="{font_size_css}">
+<div class="wrapper" style="{font_size_css}">
 	<div class="position">#{position}</div>
 	<div class="logo"><img src={logo} alt="Logo" class="logo__image"></div>
 	<div class="name">{name}</div>
 	<div class="laps">{laps}</div>
-</td>
+</div>
 
 <style lang="scss">
 	@import "./lib/colors.scss";
 
-	td {
+	.wrapper {
 		font-size: max(1.5vw, 1rem);
 		display: flex;
 		flex-flow: row nowrap;
@@ -45,6 +45,10 @@
 			&.position {
 				min-width: 3em;
 				border-right: 2px solid #AAAAAA;
+			}
+
+			&.name {
+				min-width: 16em;
 			}
 
 			&.logo {
