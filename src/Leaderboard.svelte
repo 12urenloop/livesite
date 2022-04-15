@@ -4,6 +4,14 @@
     /** !! CHANGE BEFORE RUNNING CODE !! */
     const LOXSI_URL = "ws://localhost:8000/feed";
 
+    const sponsors = [{"name": "ugent", "ext": "png", "link": "https://ugent.be"},
+                      {"name": "maes", "ext": "png", "link": "https://maes.be"},
+                      {"name": "ef", "ext": "png", "link": "https://www.ef.be"},
+                      {"name": "redbull", "ext": "png", "link": "https://www.redbull.com"},
+                      {"name": "kpmg", "ext": "jpg", "link": "https://kpmg.be"},
+                      {"name": "coca-cola", "ext": "png", "link": "https://coca-cola.be"},
+                      {"name": "gent", "ext": "png", "link": "http://www.stad.gent/sport"}]
+
     let counts: [Count] = [];
     let max_laps: number = 0;
 
@@ -29,64 +37,77 @@
     }
 
     // Test function
-    // 	parse_message(`[\
-    // { "count": 3, "team": { "id": 0, "name": "vtk" } },\
-    // { "count": 1, "team": { "id": 1, "name": "vtk" } },\
-    // { "count": 8, "team": { "id": 2, "name": "vtk" } },\
-    // { "count": 17, "team": { "id": 8, "name": "vtk" } },\
-    // { "count": 4, "team": { "id": 3, "name": "vtk" } },\
-    // { "count": 10, "team": { "id": 4, "name": "vtk" } },\
-    // { "count": 1, "team": { "id": 1, "name": "vtk" } },\
-    // { "count": 8, "team": { "id": 2, "name": "vtk" } },\
-    // { "count": 17, "team": { "id": 8, "name": "vtk" } },\
-    // { "count": 4, "team": { "id": 3, "name": "vtk" } },\
-    // { "count": 10, "team": { "id": 4, "name": "vtk" } },\
-    // { "count": 1, "team": { "id": 1, "name": "vtk" } },\
-    // { "count": 8, "team": { "id": 2, "name": "vtk" } },\
-    // { "count": 17, "team": { "id": 8, "name": "vtk" } },\
-    // { "count": 4, "team": { "id": 3, "name": "vtk" } },\
-    // { "count": 10, "team": { "id": 4, "name": "vtk" } },\
-    // { "count": 1, "team": { "id": 1, "name": "vtk" } },\
-    // { "count": 8, "team": { "id": 2, "name": "vtk" } },\
-    // { "count": 17, "team": { "id": 8, "name": "vtk" } },\
-    // { "count": 4, "team": { "id": 3, "name": "vtk" } },\
-    // { "count": 10, "team": { "id": 4, "name": "vtk" } },\
-    // { "count": 17, "team": { "id": 8, "name": "vtk" } }\
-    // ]`);
+     	parse_message(`[\
+     { "count": 3, "team": { "id": 0, "name": "vtk" } },\
+     { "count": 1, "team": { "id": 1, "name": "vtk" } },\
+     { "count": 8, "team": { "id": 2, "name": "vtk" } },\
+     { "count": 17, "team": { "id": 8, "name": "vtk" } },\
+     { "count": 4, "team": { "id": 3, "name": "vtk" } },\
+     { "count": 10, "team": { "id": 4, "name": "vtk" } },\
+     { "count": 1, "team": { "id": 1, "name": "vtk" } },\
+     { "count": 8, "team": { "id": 2, "name": "vtk" } },\
+     { "count": 17, "team": { "id": 8, "name": "vtk" } },\
+     { "count": 4, "team": { "id": 3, "name": "vtk" } },\
+     { "count": 10, "team": { "id": 4, "name": "vtk" } },\
+     { "count": 1, "team": { "id": 1, "name": "vtk" } },\
+     { "count": 8, "team": { "id": 2, "name": "vtk" } },\
+     { "count": 17, "team": { "id": 8, "name": "vtk" } },\
+     { "count": 4, "team": { "id": 3, "name": "vtk" } },\
+     { "count": 10, "team": { "id": 4, "name": "vtk" } },\
+     { "count": 1, "team": { "id": 1, "name": "vtk" } },\
+     { "count": 8, "team": { "id": 2, "name": "vtk" } },\
+     { "count": 17, "team": { "id": 8, "name": "vtk" } },\
+     { "count": 4, "team": { "id": 3, "name": "vtk" } },\
+     { "count": 10, "team": { "id": 4, "name": "vtk" } },\
+     { "count": 17, "team": { "id": 8, "name": "vtk" } }\
+     ]`);
 </script>
 
 <div class="w-100 p-4">
-    <table class="table">
-        <thead>
-        <tr>
-            <th>#</th>
-            <th></th>
-            <th>Team</th>
-            <th>Rounds</th>
-        </tr>
-        </thead>
-        <tbody>
-        {#each counts as count, i}
+    <div class="row">
+      <div class="col">
+        <table class="table">
+            <thead>
             <tr>
-                <th>{i + 1}</th>
-                <td><img src="/images/{count.team.name.toLowerCase()}.png" style="height: 30px"></td>
-                <td>{count.team.name}</td>
-                <td class="w-75 text-dark">
-                    <div class="progress" style="height: 30px">
-                        <div class="progress-bar bg-warning progress-bar-striped progress-bar-animated"
-                             role="progressbar"
-                             style="width: {Math.round(count.count/max_laps*100)}%" aria-valuenow="{count.count}"
-                             aria-valuemin="0"
-                             aria-valuemax="{max_laps}">
-                            <div class="text-dark"><b>{count.count}</b></div>
-                        </div>
-                    </div>
-                </td>
+                <th>#</th>
+                <th></th>
+                <th>Team</th>
+                <th>Rounds</th>
             </tr>
-        {/each}
-        </tbody>
+            </thead>
+            <tbody>
+            {#each counts as count, i}
+                <tr>
+                    <th>{i + 1}</th>
+                    <td><img src="/images/teams/{count.team.name.toLowerCase()}.png" style="height: 30px"></td>
+                    <td>{count.team.name}</td>
+                    <td class="w-75 text-dark">
+                        <div class="progress" style="height: 30px">
+                            <div class="progress-bar bg-warning progress-bar-striped progress-bar-animated"
+                                 role="progressbar"
+                                 style="width: {Math.round(count.count/max_laps*100)}%" aria-valuenow="{count.count}"
+                                 aria-valuemin="0"
+                                 aria-valuemax="{max_laps}">
+                                <div class="text-dark"><b>{count.count}</b></div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            {/each}
+            </tbody>
 
-    </table>
+        </table>
+      </div>
+      <div class="col-1" style="display: grid; align-items: center">
+      {#each sponsors as p, i}
+        <div class="text-center">
+          <a href="{p.link}">
+            <img src="/images/sponsors/{p.name}.{p.ext}" alt="{p.name}" style="width: 100%; padding-top: 1rem; padding-bottom: 1rem">
+          </a>
+        </div>
+      {/each}
+      </div>
+    </div>
 </div>
 
 <!-- No Sponsors for now -->
