@@ -69,7 +69,11 @@
         {#each counts as count, i}
             <tr>
                 <th>{i + 1}</th>
-                <td><img src="/images/{count.team.name.toLowerCase()}.png" style="height: 30px"></td>
+                <td>
+                    {#each count.team.name.split('-') as team_name}
+                    <img src="/images/teams/{team_name.trim().toLowerCase()}.png" style="height: 30px; margin-right: 10px">
+                    {/each}
+                </td>
                 <td>{count.team.name}</td>
                 <td class="w-75 text-dark">
                     <div class="progress" style="height: 30px">
