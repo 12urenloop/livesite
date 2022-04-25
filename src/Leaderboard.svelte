@@ -4,7 +4,7 @@
     /** !! CHANGE BEFORE RUNNING CODE !! */
     const LOXSI_URL = "ws://localhost:8000/feed";
 
-    let counts: [Count] = [];
+    let counts: Array<Count> = [];
     let max_laps: number = 0;
 
     const socket = new WebSocket(LOXSI_URL);
@@ -71,7 +71,7 @@
                 <th>{i + 1}</th>
                 <td>
                     {#each count.team.name.split('-') as team_name}
-                    <img src="/images/teams/{team_name.trim().toLowerCase()}.png" style="height: 30px; margin-right: 10px">
+                    <img src="/images/teams/{team_name.trim().toLowerCase()}.png" alt="logo" style="height: 30px; margin-right: 10px">
                     {/each}
                 </td>
                 <td>{count.team.name}</td>
@@ -79,8 +79,9 @@
                     <div class="progress" style="height: 30px">
                         <div class="progress-bar bg-warning progress-bar-striped progress-bar-animated"
                              role="progressbar"
-                             style="width: {Math.round(count.count/max_laps*100)}%" aria-valuenow="{count.count}"
-                             aria-valuemin="0"
+                             style="width: {Math.round(count.count/max_laps*100)}%;"
+							 aria-valuenow="{count.count}"
+                             aria-valuemin="{0}"
                              aria-valuemax="{max_laps}">
                             <div class="text-dark"><b>{count.count}</b></div>
                         </div>
