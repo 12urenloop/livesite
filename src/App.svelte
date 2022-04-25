@@ -2,7 +2,7 @@
 	import Leaderboard from "./Leaderboard.svelte";
   window.addEventListener('message', (evt) => {
       if (evt.data !== 'activate-ledwall') return;
-      document.body.style['background-color'] = '#ffffff00';
+      document.body.style.backgroundColor = '#ffffff00';
   })
 </script>
 
