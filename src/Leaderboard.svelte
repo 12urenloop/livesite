@@ -52,30 +52,30 @@
   }
 
   // Test function
-  parse_message(`{ "topic": "counts", "data": [\
-    { "count": 3, "team": { "id": 0, "name": "vtk" } },\
-    { "count": 1, "team": { "id": 1, "name": "vtk" } },\
-    { "count": 8, "team": { "id": 2, "name": "vtk" } },\
-    { "count": 17, "team": { "id": 8, "name": "vtk" } },\
-    { "count": 4, "team": { "id": 3, "name": "vtk" } },\
-    { "count": 10, "team": { "id": 4, "name": "vtk" } },\
-    { "count": 1, "team": { "id": 1, "name": "vtk" } },\
-    { "count": 8, "team": { "id": 2, "name": "vtk" } },\
-    { "count": 17, "team": { "id": 8, "name": "vtk" } },\
-    { "count": 4, "team": { "id": 3, "name": "vtk" } },\
-    { "count": 10, "team": { "id": 4, "name": "vtk" } },\
-    { "count": 1, "team": { "id": 1, "name": "vtk" } },\
-    { "count": 8, "team": { "id": 2, "name": "vtk" } },\
-    { "count": 17, "team": { "id": 8, "name": "vtk" } },\
-    { "count": 4, "team": { "id": 3, "name": "vtk" } },\
-    { "count": 10, "team": { "id": 4, "name": "vtk" } },\
-    { "count": 1, "team": { "id": 1, "name": "vtk" } },\
-    { "count": 8, "team": { "id": 2, "name": "vtk" } },\
-    { "count": 17, "team": { "id": 8, "name": "vtk" } },\
-    { "count": 4, "team": { "id": 3, "name": "vtk" } },\
-    { "count": 10, "team": { "id": 4, "name": "vtk" } },\
-    { "count": 17, "team": { "id": 8, "name": "vtk" } }\
-  ]}`);
+  // parse_message(`{ "topic": "counts", "data": [\
+  //   { "count": 3, "team": { "id": 0, "name": "vtk" } },\
+  //   { "count": 1, "team": { "id": 1, "name": "vtk" } },\
+  //   { "count": 8, "team": { "id": 2, "name": "vtk" } },\
+  //   { "count": 17, "team": { "id": 8, "name": "vtk" } },\
+  //   { "count": 4, "team": { "id": 3, "name": "vtk" } },\
+  //   { "count": 10, "team": { "id": 4, "name": "vtk" } },\
+  //   { "count": 1, "team": { "id": 1, "name": "vtk" } },\
+  //   { "count": 8, "team": { "id": 2, "name": "vtk" } },\
+  //   { "count": 17, "team": { "id": 8, "name": "vtk" } },\
+  //   { "count": 4, "team": { "id": 3, "name": "vtk" } },\
+  //   { "count": 10, "team": { "id": 4, "name": "vtk" } },\
+  //   { "count": 1, "team": { "id": 1, "name": "vtk" } },\
+  //   { "count": 8, "team": { "id": 2, "name": "vtk" } },\
+  //   { "count": 17, "team": { "id": 8, "name": "vtk" } },\
+  //   { "count": 4, "team": { "id": 3, "name": "vtk" } },\
+  //   { "count": 10, "team": { "id": 4, "name": "vtk" } },\
+  //   { "count": 1, "team": { "id": 1, "name": "vtk" } },\
+  //   { "count": 8, "team": { "id": 2, "name": "vtk" } },\
+  //   { "count": 17, "team": { "id": 8, "name": "vtk" } },\
+  //   { "count": 4, "team": { "id": 3, "name": "vtk" } },\
+  //   { "count": 10, "team": { "id": 4, "name": "vtk" } },\
+  //   { "count": 17, "team": { "id": 8, "name": "vtk" } }\
+  // ]}`);
 </script>
 
 <div class="w-100 p-4">
