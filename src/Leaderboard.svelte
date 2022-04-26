@@ -78,6 +78,12 @@
   // ]}`);
 </script>
 
+<style>
+#notification-banner {
+    display: none;
+}
+</style>
+
 <div class="w-100 p-4">
   <div id="notification-banner">
     <div
