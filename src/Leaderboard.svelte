@@ -84,7 +84,7 @@
 }
 </style>
 
-<div class="w-100 p-4">
+<div class="w-100 p-4 pb-0">
   <div id="notification-banner">
     <div
       class="alert alert-warning d-flex align-items-center justify-content-center fs-3"
