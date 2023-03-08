@@ -82,6 +82,12 @@
 #notification-banner {
     display: none;
 }
+.progress-bar {
+  text-align: left;
+}
+.progress-bar .text-dark {
+  padding-left: 1vw;
+}
 </style>
 
 <div class="w-100 p-4 pb-0">
