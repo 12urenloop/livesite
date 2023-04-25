@@ -68,7 +68,7 @@
 </style>
 
 {#if (new URLSearchParams(window.location.search)).get('b')}
-  <div class="w-100 pb-0">
+  <div class="w-100 pb-0" style="height: 100%">
     <div id="notification-banner">
       <div
         class="alert alert-warning d-flex align-items-center justify-content-center fs-3"
@@ -78,7 +78,7 @@
       </div>
     </div>
     
-    <div style="background-color: black; height: 100vh; color: white; gap: 16px; padding-top: 8px;" class="d-flex flex-wrap flex-row justify-content-center">
+    <div style="background-color: black; height: 100%; color: white; gap: 16px; padding-top: 8px;" class="d-flex flex-wrap flex-row justify-content-center">
       {#each counts as count, i}
         <div class="d-flex align-items-center flex-column flex-nowrap"  style="background-color: #202020; position:relative; width: 20em; border-radius: 20px;">
           <div style="font-size: 1.69rem; position: absolute; right: 0; border-bottom: 3px solid grey; border-radius:0 0 0 20px; border-left: 3px solid grey; padding: 10px">{i + 1}</div>
