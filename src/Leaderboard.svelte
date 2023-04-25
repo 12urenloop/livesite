@@ -2,7 +2,7 @@
   import { Count } from "./Count";
 
   /** !! CHANGE BEFORE RUNNING CODE !! */
-  const LOXSI_URL = "ws://localhost:8000/feed";
+  const LOXSI_URL = "wss://loxsi.12urenloop.be/feed";
 
   let counts: Array<Count> = [];
   let max_laps: number = 0;
@@ -74,6 +74,16 @@
 .progress-bar .text-dark {
   padding-left: 1vw;
 }
+.zeus {
+  float: right;
+  margin-top: -11em;
+  margin-right: 2em;
+}
+.urenloop {
+  float: left;
+  margin-top: -11em;
+  margin-left: 2em;
+}
 </style>
 
 {#if (new URLSearchParams(window.location.search)).get('b')}
@@ -107,7 +117,25 @@
         </div>
       {/each}
     </div>
-    </div>
+    <img
+      loading="lazy"
+      width="200"
+      height="200"
+      src="https://zinc.zeus.gent/zeus"
+      class="zeus"
+      alt="Zeus WPI"
+      data-recalc-dims="1"
+    />
+    <img
+            loading="lazy"
+            width="200"
+            height="200"
+            src="https://12urenloop.be/images/logo.svg"
+            class="urenloop"
+            alt="12urenloop"
+            data-recalc-dims="1"
+    />
+  </div>
   {:else}
   <div class="w-100 p-4 pb-0">
     <div id="notification-banner">
