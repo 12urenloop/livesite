@@ -31,8 +31,17 @@
       notiElem.style.display = msg.data ? "block" : "none";
       if (msg.data) {
         let notiMsgElem = document.getElementById("notification-msg");
+        const images = document.getElementsByClassName('img-container');
+        for (let i = 0; i < images.length; i++) {
+          images[i].style.height = '70px';
+        }
         if (!notiMsgElem) return;
         notiMsgElem.innerText = msg.data;
+      } else {
+        const images = document.getElementsByClassName('img-container');
+        for (let i = 0; i < images.length; i++) {
+          images[i].style.height = 'unset';
+        }
       }
     },
   };
@@ -68,7 +77,7 @@
 </style>
 
 {#if (new URLSearchParams(window.location.search)).get('b')}
-  <div class="w-100 pb-0" style="height: 100%">
+  <div class="w-100 pb-0" style="height: 100vh; background-color: black">
     <div id="notification-banner">
       <div
         class="alert alert-warning d-flex align-items-center justify-content-center fs-3"
@@ -78,9 +87,9 @@
       </div>
     </div>
     
-    <div style="background-color: black; height: 100%; color: white; gap: 16px; padding-top: 8px;" class="d-flex flex-wrap flex-row justify-content-center">
+    <div style="color: white; gap: 16px; padding-top: 8px;" class="d-flex flex-wrap flex-row justify-content-center">
       {#each counts as count, i}
-        <div class="d-flex align-items-center flex-column flex-nowrap"  style="background-color: #202020; position:relative; width: 20em; border-radius: 20px;">
+        <div class="d-flex align-items-center flex-column flex-nowrap"  style="background-color: #202020; position:relative; width: 20em; border-radius: 20px">
           <div style="font-size: 1.69rem; position: absolute; right: 0; border-bottom: 3px solid grey; border-radius:0 0 0 20px; border-left: 3px solid grey; padding: 10px">{i + 1}</div>
           <div style="max-width: 75%; text-align:center; font-size: 30px;">{count.team.name}</div>
           <div style="max-width: 95%; margin-top:auto" class="d-flex flex-row flex-nowrap justify-content-around">
@@ -88,11 +97,13 @@
               <img
                 src="/images/teams/{team_name.trim().toLowerCase()}.png"
                 alt="logo"
-                style="height: 110px;"
+                style="max-height: 100px;"
+                class="img-container"
               />
             {/each}
           </div>
-          <div style="width: 100%; margin-top:5px; font-size: 30px; border-top:1px solid grey; text-align: center; padding-top: 4px; padding-bottom: 4px">{count.count}</div>
+          <div class="align-self-start" style="margin-top:10px; background-color: orange; min-width: {count.count === 0 ? 1 : Math.round((count.count / max_laps) * 100)}%; min-height: 10px;"></div>
+          <div style="width: 100%; font-size: 30px; text-align: center; margin-bottom: 5px">{count.count}</div>
         </div>
       {/each}
     </div>
