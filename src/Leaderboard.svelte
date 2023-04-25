@@ -52,30 +52,7 @@
   }
 
   // Test function
-  // parse_message(`{ "topic": "counts", "data": [\
-  //   { "count": 3, "team": { "id": 0, "name": "vtk" } },\
-  //   { "count": 1, "team": { "id": 1, "name": "vtk" } },\
-  //   { "count": 8, "team": { "id": 2, "name": "vtk" } },\
-  //   { "count": 17, "team": { "id": 8, "name": "vtk" } },\
-  //   { "count": 4, "team": { "id": 3, "name": "vtk" } },\
-  //   { "count": 10, "team": { "id": 4, "name": "vtk" } },\
-  //   { "count": 1, "team": { "id": 1, "name": "vtk" } },\
-  //   { "count": 8, "team": { "id": 2, "name": "vtk" } },\
-  //   { "count": 17, "team": { "id": 8, "name": "vtk" } },\
-  //   { "count": 4, "team": { "id": 3, "name": "vtk" } },\
-  //   { "count": 10, "team": { "id": 4, "name": "vtk" } },\
-  //   { "count": 1, "team": { "id": 1, "name": "vtk" } },\
-  //   { "count": 8, "team": { "id": 2, "name": "vtk" } },\
-  //   { "count": 17, "team": { "id": 8, "name": "vtk" } },\
-  //   { "count": 4, "team": { "id": 3, "name": "vtk" } },\
-  //   { "count": 10, "team": { "id": 4, "name": "vtk" } },\
-  //   { "count": 1, "team": { "id": 1, "name": "vtk" } },\
-  //   { "count": 8, "team": { "id": 2, "name": "vtk" } },\
-  //   { "count": 17, "team": { "id": 8, "name": "vtk" } },\
-  //   { "count": 4, "team": { "id": 3, "name": "vtk" } },\
-  //   { "count": 10, "team": { "id": 4, "name": "vtk" } },\
-  //   { "count": 17, "team": { "id": 8, "name": "vtk" } }\
-  // ]}`);
+  parse_message(`{"topic": "counts", "data": [{"count": 12, "team": {"id": 1, "name": "HILOK"}}, {"count": 305, "team": {"id": 2, "name": "VTK"}}, {"count": 300, "team": {"id": 3, "name": "VLK"}}, {"count": 0, "team": {"id": 4, "name": "VGK"}}, {"count": 0, "team": {"id": 5, "name": "VEK - Moeder Lies"}}, {"count": 0, "team": {"id": 6, "name": "Wetenschappen - VLAK - VETO"}}, {"count": 0, "team": {"id": 7, "name": "Hermes - GFK"}}, {"count": 0, "team": {"id": 8, "name": "Politeia"}}, {"count": 0, "team": {"id": 9, "name": "HK"}}, {"count": 0, "team": {"id": 10, "name": "VRG"}}, {"count": 0, "team": {"id": 11, "name": "VPPK"}}, {"count": 0, "team": {"id": 12, "name": "Blandinia"}}, {"count": 0, "team": {"id": 13, "name": "SK"}}, {"count": 0, "team": {"id": 14, "name": "Lombrosiana - VBK"}}, {"count": 0, "team": {"id": 15, "name": "LILA"}}, {"count": 0, "team": {"id": 16, "name": "Antilopen"}}, {"count": 0, "team": {"id": 17, "name": "HILOK Roze"}}]}`);
 </script>
 
 <style>
@@ -90,57 +67,90 @@
 }
 </style>
 
-<div class="w-100 p-4 pb-0">
-  <div id="notification-banner">
-    <div
-      class="alert alert-warning d-flex align-items-center justify-content-center fs-3"
-      role="alert"
-    >
-      <div id="notification-msg">An example danger alert with an icon</div>
+{#if (new URLSearchParams(window.location.search)).get('b')}
+  <div class="w-100 pb-0">
+    <div id="notification-banner">
+      <div
+        class="alert alert-warning d-flex align-items-center justify-content-center fs-3"
+        role="alert"
+      >
+        <div id="notification-msg">An example danger alert with an icon</div>
+      </div>
     </div>
-  </div>
-  <table class="table">
-    <thead>
-      <tr>
-        <th>#</th>
-        <th />
-        <th>Team</th>
-        <th>Rounds</th>
-      </tr>
-    </thead>
-    <tbody>
+    
+    <div style="background-color: black; height: 100vh; color: white; gap: 16px; padding-top: 8px;" class="d-flex flex-wrap flex-row justify-content-center">
       {#each counts as count, i}
-        <tr>
-          <th>{i + 1}</th>
-          <td>
+        <div class="d-flex align-items-center flex-column flex-nowrap"  style="background-color: #202020; position:relative; width: 20em; border-radius: 20px;">
+          <div style="font-size: 1.69rem; position: absolute; right: 0; border-bottom: 3px solid grey; border-radius:0 0 0 20px; border-left: 3px solid grey; padding: 10px">{i + 1}</div>
+          <div style="max-width: 75%; text-align:center; font-size: 30px;">{count.team.name}</div>
+          <div style="max-width: 95%; margin-top:auto" class="d-flex flex-row flex-nowrap justify-content-around">
             {#each count.team.name.split("-") as team_name}
               <img
                 src="/images/teams/{team_name.trim().toLowerCase()}.png"
                 alt="logo"
-                style="height: 30px; margin-right: 10px"
+                style="height: 110px;"
               />
             {/each}
-          </td>
-          <td>{count.team.name}</td>
-          <td class="w-75 text-dark">
-            <div class="progress" style="height: 30px">
-              <div
-                class="progress-bar bg-warning progress-bar-striped progress-bar-animated"
-                role="progressbar"
-                style="width: {Math.round((count.count / max_laps) * 100)}%;"
-                aria-valuenow={count.count}
-                aria-valuemin={0}
-                aria-valuemax={max_laps}
-              >
-                <div class="text-dark"><b>{count.count}</b></div>
-              </div>
-            </div>
-          </td>
-        </tr>
+          </div>
+          <div style="width: 100%; margin-top:5px; font-size: 30px; border-top:1px solid grey; text-align: center; padding-top: 4px; padding-bottom: 4px">{count.count}</div>
+        </div>
       {/each}
-    </tbody>
-  </table>
-</div>
+    </div>
+    </div>
+  {:else}
+  <div class="w-100 p-4 pb-0">
+    <div id="notification-banner">
+      <div
+        class="alert alert-warning d-flex align-items-center justify-content-center fs-3"
+        role="alert"
+      >
+        <div id="notification-msg">An example danger alert with an icon</div>
+      </div>
+    </div>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th />
+          <th>Team</th>
+          <th>Rounds</th>
+        </tr>
+      </thead>
+      <tbody>
+        {#each counts as count, i}
+          <tr>
+            <th>{i + 1}</th>
+            <td>
+              {#each count.team.name.split("-") as team_name}
+                <img
+                  src="/images/teams/{team_name.trim().toLowerCase()}.png"
+                  alt="logo"
+                  style="height: 30px; margin-right: 10px"
+                />
+              {/each}
+            </td>
+            <td>{count.team.name}</td>
+            <td class="w-75 text-dark">
+              <div class="progress" style="height: 30px">
+                <div
+                  class="progress-bar bg-warning progress-bar-striped progress-bar-animated"
+                  role="progressbar"
+                  style="width: {Math.round((count.count / max_laps) * 100)}%;"
+                  aria-valuenow={count.count}
+                  aria-valuemin={0}
+                  aria-valuemax={max_laps}
+                >
+                  <div class="text-dark"><b>{count.count}</b></div>
+                </div>
+              </div>
+            </td>
+          </tr>
+        {/each}
+      </tbody>
+    </table>
+  </div>
+{/if}
+
 
 <!-- No Sponsors for now -->
 <!--<footer><img src="https://zinc.zeus.gent/zeus" alt="Sponsor"></footer>-->
