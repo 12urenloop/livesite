@@ -2,7 +2,7 @@
   import { Count } from "./Count";
 
   /** !! CHANGE BEFORE RUNNING CODE !! */
-  const LOXSI_URL = "wss://loxsi.12urenloop.be/feed";
+  const LOXSI_URL = "ws://localhost:8000/feed";
 
   let counts: Array<Count> = [];
   let max_laps: number = 0;
