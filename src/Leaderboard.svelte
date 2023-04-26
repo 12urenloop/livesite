@@ -174,7 +174,7 @@
                 <div
                   class="progress-bar bg-warning progress-bar-striped progress-bar-animated"
                   role="progressbar"
-                  style="width: {Math.round((count.count / max_laps) * 100)}%;"
+                  style="width: {count.count === 0 ? 0 : Math.round((count.count / max_laps) * 100)}%;"
                   aria-valuenow={count.count}
                   aria-valuemin={0}
                   aria-valuemax={max_laps}
