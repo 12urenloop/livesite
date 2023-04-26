@@ -87,7 +87,12 @@
 </style>
 
 {#if (new URLSearchParams(window.location.search)).get('b')}
-  <div class="w-100 pb-0" style="height: 100vh; background-color: black">
+  <style>  
+  body {  
+      background-color: black;  
+  }
+  </style>  
+  <div class="w-100 pb-0" style="height: 100vh;">
     <div id="notification-banner">
       <div
         class="alert alert-warning d-flex align-items-center justify-content-center fs-3"
