@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { onMount } from "svelte";
   import { Count } from "./Count";
 
   /** !! CHANGE BEFORE RUNNING CODE !! */
@@ -7,16 +8,24 @@
   let counts: Array<Count> = [];
   let max_laps: number = 0;
 
-  const socket = new WebSocket(LOXSI_URL);
-  socket.onerror = (err) => {
-    console.error(`WEBSOCKET ERROR:\n${err}`);
-  };
-  socket.onclose = (ev) => {
-    console.error(`WEBSOCKET CLOSED:\n${ev}`);
-  };
-  socket.onmessage = (ev) => {
-    parse_message(ev.data);
-  };
+  const openSocket = async (timeout = 0) => {
+    timeout = Math.min(timeout, 5000);
+    if (timeout > 0) {
+      console.log(`Opening websocket with ${timeout/1000}s timeout`)
+      await new Promise(res => setTimeout(res,timeout));
+    }
+    const socket = new WebSocket(LOXSI_URL);
+    socket.onerror = async (err) => {
+      console.error(`WEBSOCKET ERROR:`, err);
+    };
+    socket.onclose = async (ev) => {
+      console.error(`WEBSOCKET CLOSED:`, ev);
+      await openSocket(timeout + 1000);
+    };
+    socket.onmessage = (ev) => {
+      parse_message(ev.data);
+    };
+  }
 
   const socketMsgHandler: Record<string, SocketHandler> = {
     counts: (msg: SocketMsg) => {
@@ -59,6 +68,10 @@
       );
     }
   }
+
+  onMount(() => {
+    openSocket();
+  })
 
   // Test function
   parse_message(`{"topic": "counts", "data": [{"count": 12, "team": {"id": 1, "name": "HILOK"}}, {"count": 305, "team": {"id": 2, "name": "VTK"}}, {"count": 300, "team": {"id": 3, "name": "VLK"}}, {"count": 0, "team": {"id": 4, "name": "VGK"}}, {"count": 0, "team": {"id": 5, "name": "VEK - Moeder Lies"}}, {"count": 0, "team": {"id": 6, "name": "Wetenschappen - VLAK - VETO"}}, {"count": 0, "team": {"id": 7, "name": "Hermes - GFK"}}, {"count": 0, "team": {"id": 8, "name": "Politeia"}}, {"count": 0, "team": {"id": 9, "name": "HK"}}, {"count": 0, "team": {"id": 10, "name": "VRG"}}, {"count": 0, "team": {"id": 11, "name": "VPPK"}}, {"count": 0, "team": {"id": 12, "name": "Blandinia"}}, {"count": 0, "team": {"id": 13, "name": "SK"}}, {"count": 0, "team": {"id": 14, "name": "Lombrosiana - VBK"}}, {"count": 0, "team": {"id": 15, "name": "LILA"}}, {"count": 0, "team": {"id": 16, "name": "Antilopen"}}, {"count": 0, "team": {"id": 17, "name": "HILOK Roze"}}]}`);
