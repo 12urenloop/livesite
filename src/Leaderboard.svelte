@@ -192,6 +192,7 @@
         {/each}
       </tbody>
     </table>
+    <a href='/?b=fromlivescreen'><button type="button" class="btn btn-secondary">LED screen mode</button></a>
   </div>
 {/if}
 
