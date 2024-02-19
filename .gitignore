@@ -38,3 +38,5 @@ dist/
 /public/build/
 .DS_Store
 
+/build/
+/.svelte-kit/
