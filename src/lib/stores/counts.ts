@@ -5,18 +5,13 @@ import {env} from "$env/dynamic/public";
 const socketMsgHandler: Record<string, SocketHandler> = {
     counts: (msg: SocketMsg<Count[]>) => {
         const new_counts = msg.data.sort((c1, c2) => c2.count - c1.count)
-        console.log(new_counts)
         let prev_count = 0;
         let j = 0;
         new_counts.map((c) => {
-            console.log(c.count, prev_count)
-            if (c.count < prev_count) {
-                j++;
-            }
+            if (c.count < prev_count) j++;
             prev_count = c.count;
             c.rank = j;
         })
-        console.log(new_counts)
         counts.set(new_counts);
         max_laps.set(new_counts.reduce((a, b) => (a.count > b.count ? a : b)).count)
 
