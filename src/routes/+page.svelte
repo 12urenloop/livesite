@@ -29,16 +29,6 @@
             );
         }
     });
-    let prevCount = 0;
-    let i = 0;
-
-    $counts = $counts.map((count) => {
-        if (count.count > prevCount) {
-            i++;
-        }
-        prevCount = count.count;
-        return {...count, rank: i + 1};
-    });
 </script>
 
 <div class="p-4">
