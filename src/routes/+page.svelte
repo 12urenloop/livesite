@@ -45,7 +45,7 @@
         {#each $counts as count}
             {@const perc = Math.round((count.count / $max_laps) * 100)}
             <tr>
-                <th>{count.rank + 1}</th>
+                <th>{count.rank}</th>
                 <td>
                     {#each count.team.name.split("-") as team_name}
                         <img

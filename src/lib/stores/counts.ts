@@ -6,7 +6,7 @@ const socketMsgHandler: Record<string, SocketHandler> = {
     counts: (msg: SocketMsg<Count[]>) => {
         const new_counts = msg.data.sort((c1, c2) => c2.count - c1.count)
         let prev_count = 0;
-        let j = 0;
+        let j = 1;
         new_counts.map((c) => {
             if (c.count < prev_count) j++;
             prev_count = c.count;

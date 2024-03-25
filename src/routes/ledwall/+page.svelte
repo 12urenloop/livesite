@@ -11,7 +11,7 @@
                 <div
                         class="rounded-bl-2xl text-2xl absolute right-0 border-l-2 border-b-2 border-zinc-200 p-4"
                 >
-                    {count.rank + 1}
+                    {count.rank}
                 </div>
                 <div class="max-w-56 text-center text-4xl">
                     {count.team.name}
