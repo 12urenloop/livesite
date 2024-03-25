@@ -21,18 +21,6 @@ const socketMsgHandler: Record<string, SocketHandler> = {
         if (!notiElem) return;
         notiElem.style.display = msg.data ? "block" : "none";
         notification.set(msg.data ?? "");
-        // TODO: refactor to use a reactive value to set the height
-        // if (msg.data) {
-        //   const images = document.getElementsByClassName("img-container");
-        //   for (let i = 0; i < images.length; i++) {
-        //     images[i].style.height = "70px";
-        //   }
-        // } else {
-        //   const images = document.getElementsByClassName("img-container");
-        //   for (let i = 0; i < images.length; i++) {
-        //     images[i].style.height = "unset";
-        //   }
-        // }
     },
 };
 
