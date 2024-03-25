@@ -1,24 +1,13 @@
-#########
-# BUILD #
-#########
+FROM node:20-slim AS base
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+RUN corepack enable
+COPY . /app
+WORKDIR /app
 
-FROM node:alpine AS build
-
-WORKDIR /livesite
-
-# Copy configs
-COPY ./package.json .
-COPY ./rollup.config.js .
-COPY ./svelte.config.js .
-COPY ./tsconfig.json .
-
-RUN npm i
-
-# Copy static files
-COPY ./public/ ./public/
-COPY ./src/ ./src/
-
-RUN npm run build
+FROM base AS build
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
+RUN pnpm run build
 
 #######
 # RUN #
@@ -26,4 +15,4 @@ RUN npm run build
 
 FROM nginx:alpine
 
-COPY --from=build /livesite/public/ /usr/share/nginx/html/
+COPY --from=build /app/build/ /usr/share/nginx/html/

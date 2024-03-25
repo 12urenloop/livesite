@@ -1,9 +1,5 @@
-node_modules/
-public/build/
-.dockerignore
+node_modules
 .git
-.gitignore/
-Dockerfile
-LICENSE
-README.me
-package-lock.json
+.gitignore
+*.md
+build
