@@ -28,24 +28,22 @@ export const counts = writable<Count[]>([]);
 export const max_laps = writable(0);
 export const notification = writable("");
 
-export const startWebsocket = () => {
-    const openSocket = async (timeout = 0) => {
-        timeout = Math.min(timeout, 5000);
-        if (timeout > 0) {
-            console.log(`Opening websocket with ${timeout / 1000}s timeout`);
-            await new Promise((res) => setTimeout(res, timeout));
-        }
-        const socket = new WebSocket(env.PUBLIC_LOXSI_URL ?? "ws://localhost:8000/feed");
-        socket.onerror = async (err) => {
-            console.error(`WEBSOCKET ERROR:`, err);
-        };
-        socket.onclose = async (ev) => {
-            console.error(`WEBSOCKET CLOSED:`, ev);
-            await openSocket(timeout + 1000);
-        };
-        socket.onmessage = (ev) => {
-            parse_message(ev.data);
-        };
+export const startWebsocket = async (timeout = 0) => {
+    timeout = Math.min(timeout, 5000);
+    if (timeout > 0) {
+        console.log(`Opening websocket with ${timeout / 1000}s timeout`);
+        await new Promise((res) => setTimeout(res, timeout));
+    }
+    const socket = new WebSocket(env.PUBLIC_LOXSI_URL ?? "ws://localhost:8000/feed");
+    socket.onerror = async (err) => {
+        console.error(`WEBSOCKET ERROR:`, err);
+    };
+    socket.onclose = async (ev) => {
+        console.error(`WEBSOCKET CLOSED:`, ev);
+        await startWebsocket(timeout + 1000);
+    };
+    socket.onmessage = (ev) => {
+        parse_message(ev.data);
     };
 }
 
