@@ -6,5 +6,6 @@ services:
             context: .
         container_name: live_site
         restart: unless-stopped
+        env_file: .env
         ports:
             - "4000:80"
