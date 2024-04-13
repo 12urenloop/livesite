@@ -1,12 +1,14 @@
 <script lang="ts">
   import { onMount } from "svelte";
   import { counts, max_laps, startWebsocket } from "$lib/stores/counts";
+  import { background } from "$lib/stores/bodyStyle";
   onMount(() => {
     startWebsocket();
+    background.set("black");
   });
 </script>
 
-<div class="z-[2] relative h-screen overflow-auto">
+<div class="relative h-screen overflow-auto">
   <div class="flex flex-wrap justify-center text-white gap-4 pt-2">
     {#each $counts as count}
       <div
@@ -63,7 +65,6 @@
     data-recalc-dims="1"
   />
 </div>
-<div class="w-screen h-screen z-[1] absolute top-0 left-0 bg-black" />
 
 <style>
   .zeus {
