@@ -13,6 +13,6 @@ RUN pnpm run build
 # RUN #
 #######
 
-FROM nginx:alpine
+FROM nginx:alpine-slim
 
 COPY --from=build /app/build/ /usr/share/nginx/html/
