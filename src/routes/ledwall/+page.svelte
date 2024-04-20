@@ -1,7 +1,9 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import { counts, max_laps, startWebsocket } from "$lib/stores/counts";
+  import { counts, max_laps } from "$lib/stores/counts";
   import { background } from "$lib/stores/bodyStyle";
+  import { startWebsocket } from "$lib/websocket";
+
   onMount(() => {
     startWebsocket();
     background.set("black");

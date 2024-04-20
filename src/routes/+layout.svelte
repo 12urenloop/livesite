@@ -10,7 +10,7 @@
 >
   {#if $notification !== ""}
     <div class="p-2">
-      <div role="alert" class="alert alert-warning">
+      <div role="alert" class="alert alert-warning flex">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           class="stroke-current shrink-0 h-6 w-6"
