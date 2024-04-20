@@ -3,7 +3,7 @@
   import GrowingBar from "$lib/components/GrowingBar.svelte";
   import RotatingImages from "$lib/components/RotatingImages.svelte";
   import { background } from "$lib/stores/bodyStyle";
-  import { counts, max_laps, positions } from "$lib/stores/counts";
+  import { counts, max_laps } from "$lib/stores/counts";
   import { startWebsocket, parse_message } from "$lib/websocket";
   import { onMount } from "svelte";
   import { flip } from "svelte/animate";
